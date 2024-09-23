@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "331624126278",
+    "project_id": "void-chat-41c6b",
+    "storage_bucket": "void-chat-41c6b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:331624126278:android:3a4ad287d28dce169bf747",
+        "android_client_info": {
+          "package_name": "com.example.voidchat"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCm-dYLHaW4rsNcaojKkk8CrsQSlOdgcHo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

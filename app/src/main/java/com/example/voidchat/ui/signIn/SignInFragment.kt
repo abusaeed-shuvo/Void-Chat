@@ -49,36 +49,27 @@ class SignInFragment : Fragment() {
         return binding.root
     }
 
-    fun isEmailValid(email: String): Boolean {
+    private fun isEmailValid(email: String): Boolean {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 
-    fun isPasswordValid(password: String): Boolean {
-        val passRegex = Regex("^(?=.*[A-Za-z])(?=.*[@$!%*#?&])[A-Za-z@$!%*#?&\\d]{6,}$")
-
-        return password.matches(passRegex)
-    }
-
-    fun loginUser(email: String, password: String) {
+    private fun loginUser(email: String, password: String) {
         val auth = FirebaseAuth.getInstance()
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val user = auth.currentUser
-                //toast
-                Toast.makeText(
-                    activity,
-                    "${user?.email} has logged in successfully",
-                    Toast.LENGTH_SHORT
-                ).show()
+
 
                 // message
                 val builder = AlertDialog.Builder(requireContext())
                 builder.setTitle("Sign In")
                 builder.setMessage("${user?.email} has logged in successfully")
 
-                builder.setNeutralButton(
-                    "Ok"
-                ) { p0, _ -> p0.cancel() }
+                builder.setPositiveButton(
+                    "Go Home"
+                ) { _, _ ->
+                    findNavController().navigate(R.id.action_signInFragment_to_homeFragment)
+                }
 
                 val alertDialog = builder.create()
                 alertDialog.show()

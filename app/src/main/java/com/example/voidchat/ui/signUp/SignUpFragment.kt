@@ -9,18 +9,24 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.voidchat.R
+import com.example.voidchat.data.DBNODES
+import com.example.voidchat.data.User
 import com.example.voidchat.databinding.FragmentSignUpBinding
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
 
 class SignUpFragment : Fragment() {
     private lateinit var binding: FragmentSignUpBinding
+    private lateinit var userDB: DatabaseReference
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentSignUpBinding.inflate(inflater, container, false)
+        userDB = FirebaseDatabase.getInstance().reference
 
         binding.signInTV.setOnClickListener {
             findNavController().navigate(R.id.action_signUpFragment_to_signInFragment)
@@ -57,13 +63,23 @@ class SignUpFragment : Fragment() {
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             if (task.isSuccessful) {
 
-                // message
-                Toast.makeText(activity, "New account created successfully!", Toast.LENGTH_SHORT)
-                    .show()
-
-                findNavController().navigate(R.id.action_signUpFragment_to_signInFragment)
+                saveUserToDatabase(auth.currentUser?.uid, email, userName)
             } else {
                 Toast.makeText(activity, "${task.exception?.message}", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun saveUserToDatabase(uid: String?, email: String, userName: String) {
+        uid?.let {
+            val user = User(userId = uid, email = email, fullName = userName)
+            userDB.child(DBNODES.USER).child(it).setValue(user).addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    findNavController().navigate(R.id.action_signUpFragment_to_homeFragment)
+                } else {
+                    Toast.makeText(context, "${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                }
+
             }
         }
     }

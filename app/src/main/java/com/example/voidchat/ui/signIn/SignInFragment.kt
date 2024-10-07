@@ -6,16 +6,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.voidchat.R
 import com.example.voidchat.databinding.FragmentSignInBinding
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 
 
 class SignInFragment : Fragment() {
     private lateinit var binding: FragmentSignInBinding
+    lateinit var firebaseUser: FirebaseUser
 
 
     override fun onCreateView(
@@ -24,10 +25,15 @@ class SignInFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         binding = FragmentSignInBinding.inflate(inflater, container, false)
+        FirebaseAuth.getInstance().currentUser?.let {
+            firebaseUser = it
+            findNavController().navigate(R.id.action_signInFragment_to_homeFragment)
+        }
 
         binding.signUpTV.setOnClickListener {
             findNavController().navigate(R.id.action_signInFragment_to_signUpFragment)
         }
+
 
         binding.btnSignIn.setOnClickListener {
             val email = binding.inputSignInEmail.text.toString().trim()
@@ -60,19 +66,12 @@ class SignInFragment : Fragment() {
                 val user = auth.currentUser
 
 
-                // message
-                val builder = AlertDialog.Builder(requireContext())
-                builder.setTitle("Sign In")
-                builder.setMessage("${user?.email} has logged in successfully")
+                Toast.makeText(context, "${user?.email} Has Login Successfully", Toast.LENGTH_SHORT)
+                    .show()
 
-                builder.setPositiveButton(
-                    "Go Home"
-                ) { _, _ ->
-                    findNavController().navigate(R.id.action_signInFragment_to_homeFragment)
-                }
+                findNavController().navigate(R.id.action_signInFragment_to_homeFragment)
 
-                val alertDialog = builder.create()
-                alertDialog.show()
+
             } else {
                 Toast.makeText(activity, "${task.exception?.message}", Toast.LENGTH_SHORT).show()
             }

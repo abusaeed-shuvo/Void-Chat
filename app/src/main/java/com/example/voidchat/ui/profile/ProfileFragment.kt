@@ -19,47 +19,50 @@ import com.google.firebase.database.ValueEventListener
 
 
 class ProfileFragment : Fragment() {
-    private lateinit var binding: FragmentProfileBinding
-    private lateinit var userDB: DatabaseReference
+	private lateinit var binding: FragmentProfileBinding
+	private lateinit var userDB: DatabaseReference
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentProfileBinding.inflate(inflater, container, false)
-        userDB = FirebaseDatabase.getInstance().reference
-        arguments?.getString("id", "")?.let {
-            getUserById(it)
+	override fun onCreateView(
+		inflater: LayoutInflater, container: ViewGroup?,
+		savedInstanceState: Bundle?
+	): View {
+		binding = FragmentProfileBinding.inflate(inflater, container, false)
+		userDB = FirebaseDatabase.getInstance().reference
+		arguments?.getString("id", "")?.let {
+			getUserById(it)
 
-        }
-        binding.goHomeBtn.setOnClickListener {
-            findNavController().navigate(R.id.action_profileFragment_to_homeFragment)
-        }
+		}
+		binding.goHomeBtn.setOnClickListener {
+			findNavController().navigate(R.id.action_profileFragment_to_homeFragment)
+		}
+		binding.messageBtn.setOnClickListener {
+			findNavController().navigate(R.id.action_profileFragment_to_chatFragment)
+		}
 
 
-        return binding.root
-    }
+		return binding.root
+	}
 
-    private fun getUserById(userId: String) {
-        userDB.child(DBNODES.USER).child(userId).addValueEventListener(
-            object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    snapshot.getValue(User::class.java)?.let {
-                        binding.apply {
-                            fullUserName.text = it.fullName
-                            userBio.text = it.bio
-                            emailTV.text = it.email
-                        }
-                    }
-                }
+	private fun getUserById(userId: String) {
+		userDB.child(DBNODES.USER).child(userId).addValueEventListener(
+			object : ValueEventListener {
+				override fun onDataChange(snapshot: DataSnapshot) {
+					snapshot.getValue(User::class.java)?.let {
+						binding.apply {
+							fullUserName.text = it.fullName
+							userBio.text = it.bio
+							emailTV.text = it.email
+						}
+					}
+				}
 
-                override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(context, "${error.message}", Toast.LENGTH_SHORT).show()
-                }
+				override fun onCancelled(error: DatabaseError) {
+					Toast.makeText(context, "${error.message}", Toast.LENGTH_SHORT).show()
+				}
 
-            }
-        )
-    }
+			}
+		)
+	}
 
 
 }

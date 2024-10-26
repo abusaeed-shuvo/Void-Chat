@@ -1,4 +1,4 @@
-package com.example.voidchat.ui.recyclerViewItem
+package com.example.voidchat.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,14 +6,17 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.example.voidchat.data.User
 import com.example.voidchat.databinding.UserItemBinding
 
-class UserAdapter(var itemClick: ItemClick) : ListAdapter<User, UserViewHolder>(comparator) {
+class UserAdapter(var itemClick: ItemClick) :
+	ListAdapter<User, UserAdapter.UserViewHolder>(comparator) {
 	interface ItemClick {
 		fun onItemClick(user: User)
 	}
 
+	inner class UserViewHolder(var binding: UserItemBinding) : RecyclerView.ViewHolder(binding.root)
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
 		return UserViewHolder(
@@ -37,6 +40,10 @@ class UserAdapter(var itemClick: ItemClick) : ListAdapter<User, UserViewHolder>(
 					userBio.visibility = View.GONE
 				}
 
+				if (it.profilePicture != "no Link" && it.profilePicture != "") {
+					profileIcon.load(it.profilePicture)
+				}
+
 			}
 
 			holder.itemView.setOnClickListener { _ ->
@@ -44,6 +51,7 @@ class UserAdapter(var itemClick: ItemClick) : ListAdapter<User, UserViewHolder>(
 			}
 		}
 	}
+
 
 	companion object {
 		var comparator = object : DiffUtil.ItemCallback<User>() {
@@ -59,4 +67,3 @@ class UserAdapter(var itemClick: ItemClick) : ListAdapter<User, UserViewHolder>(
 	}
 }
 
-class UserViewHolder(var binding: UserItemBinding) : RecyclerView.ViewHolder(binding.root)

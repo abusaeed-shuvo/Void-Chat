@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/signInFragment"
-        android:name="com.example.voidchat.ui.signIn.SignInFragment"
+        android:name="com.example.voidchat.fragments.SignInFragment"
         android:label="fragment_sign_in"
         tools:layout="@layout/fragment_sign_in" >
         <action
@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
-        android:name="com.example.voidchat.ui.signUp.SignUpFragment"
+        android:name="com.example.voidchat.fragments.SignUpFragment"
         android:label="fragment_sign_up"
         tools:layout="@layout/fragment_sign_up" >
         <action
@@ -31,7 +31,7 @@
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.voidchat.ui.home.HomeFragment"
+        android:name="com.example.voidchat.fragments.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -43,7 +43,7 @@
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.voidchat.ui.profile.ProfileFragment"
+        android:name="com.example.voidchat.fragments.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" >
         <action
@@ -52,14 +52,26 @@
         <action
             android:id = "@+id/action_profileFragment_to_chatFragment"
             app:destination = "@id/chatFragment" />
+        <action
+            android:id = "@+id/action_profileFragment_to_profileEditFragment"
+            app:destination = "@id/profileEditFragment" />
     </fragment>
     <fragment
         android:id = "@+id/chatFragment"
-        android:name = "com.example.voidchat.ui.chat.ChatFragment"
+        android:name = "com.example.voidchat.fragments.ChatFragment"
         android:label = "fragment_chat"
         tools:layout = "@layout/fragment_chat" >
         <action
             android:id = "@+id/action_chatFragment_to_homeFragment"
             app:destination = "@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id = "@+id/profileEditFragment"
+        android:name = "com.example.voidchat.fragments.ProfileEditFragment"
+        android:label = "fragment_profile_edit"
+        tools:layout = "@layout/fragment_profile_edit" >
+        <action
+            android:id = "@+id/action_profileEditFragment_to_profileFragment"
+            app:destination = "@id/profileFragment" />
     </fragment>
 </navigation>

@@ -1,4 +1,4 @@
-package com.example.voidchat.ui.home
+package com.example.voidchat.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,11 +7,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import coil.load
 import com.example.voidchat.R
+import com.example.voidchat.adapters.UserAdapter
 import com.example.voidchat.data.DBNODES
 import com.example.voidchat.data.User
 import com.example.voidchat.databinding.FragmentHomeBinding
-import com.example.voidchat.ui.recyclerViewItem.UserAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
@@ -26,44 +27,51 @@ class HomeFragment : Fragment(), UserAdapter.ItemClick {
 	private lateinit var userDB: DatabaseReference
 	private lateinit var adapter: UserAdapter
 	private lateinit var firebaseUser: FirebaseUser
+
 	var userList: MutableList<User> = mutableListOf()
 	private val auth = FirebaseAuth.getInstance()
-	private var currentUser:User?=null
+	private var currentUser: User? = null
+	private val bundle = Bundle()
+
 
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View {
-		// Inflate the layout for this fragment
 		binding = FragmentHomeBinding.inflate(inflater, container, false)
+
+		return binding.root
+	}
+
+	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+		super.onViewCreated(view, savedInstanceState)
+
 		userDB = FirebaseDatabase.getInstance().reference
 		FirebaseAuth.getInstance().currentUser?.let {
 			firebaseUser = it
 		}
 
-
 		binding.logoutBtn.setOnClickListener {
-
 			auth.signOut().apply {
 				findNavController().navigate(R.id.action_homeFragment_to_signInFragment)
 			}
-
 		}
 
 		binding.profileBtn.setOnClickListener {
-			var bundle = Bundle()
-			bundle.putString("id", auth.currentUser?.uid)
-			findNavController().navigate(R.id.action_homeFragment_to_profileFragment, bundle)
-		}
 
+			currentUser?.let {
+				bundle.putString("id", it.userId)
+				findNavController().navigate(R.id.action_homeFragment_to_profileFragment, bundle)
+			}
+		}
 
 		adapter = UserAdapter(this@HomeFragment)
 		binding.recyclerView.adapter = adapter
-
 		getAvailableUser()
 
-		return binding.root
+
 	}
+
 
 	private fun getAvailableUser() {
 
@@ -71,15 +79,15 @@ class HomeFragment : Fragment(), UserAdapter.ItemClick {
 			override fun onDataChange(snapshot: DataSnapshot) {
 				userList.clear()
 				snapshot.children.forEach {
-
 					val user: User = it.getValue(User::class.java)!!
-
-					if(firebaseUser.uid!=user.userId) {
+					if (firebaseUser.uid != user.userId) {
 						userList.add(user)
-					}else{
-						currentUser=user
+					} else {
+						currentUser = user
+						if (user.profilePicture != "no Link" && user.profilePicture != "") {
+							binding.profileBtn.load(user.profilePicture)
+						}
 					}
-
 				}
 				adapter.submitList(userList)
 			}
@@ -87,12 +95,10 @@ class HomeFragment : Fragment(), UserAdapter.ItemClick {
 			override fun onCancelled(error: DatabaseError) {
 				Toast.makeText(context, "Error: ${error.message}", Toast.LENGTH_SHORT).show()
 			}
-
 		})
 	}
 
 	override fun onItemClick(user: User) {
-		var bundle = Bundle()
 		bundle.putString("id", user.userId)
 		findNavController().navigate(R.id.action_homeFragment_to_profileFragment, bundle)
 	}

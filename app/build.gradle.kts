@@ -28,11 +28,11 @@ android {
 		}
 	}
 	compileOptions {
-		sourceCompatibility = JavaVersion.VERSION_1_8
-		targetCompatibility = JavaVersion.VERSION_1_8
+		sourceCompatibility = JavaVersion.VERSION_11
+		targetCompatibility = JavaVersion.VERSION_11
 	}
 	kotlinOptions {
-		jvmTarget = "1.8"
+		jvmTarget = "11"
 	}
 	buildFeatures.viewBinding = true
 }
@@ -40,7 +40,6 @@ android {
 dependencies {
 
 	implementation(libs.androidx.core.ktx)
-	implementation(libs.androidx.appcompat)
 	implementation(libs.material)
 	implementation(libs.androidx.activity)
 	implementation(libs.androidx.constraintlayout)
@@ -49,6 +48,7 @@ dependencies {
 	implementation(libs.firebase.storage)
 	implementation(libs.firebase.messaging)
 	implementation(libs.firebase.inappmessaging.display)
+	implementation(libs.glide)
 	testImplementation(libs.junit)
 	androidTestImplementation(libs.androidx.junit)
 	androidTestImplementation(libs.androidx.espresso.core)
@@ -65,5 +65,20 @@ dependencies {
 
 	//Circle Image
 	implementation(libs.circleimageview)
+
+	//Dexter
+	implementation (libs.dexter)
+
+
+
+	//image picker
+	implementation(libs.imagepicker)
+
+	implementation(libs.androidx.activity.ktx)
+	implementation(libs.androidx.fragment.ktx)
+
+	implementation(libs.circleimageview)
+
+	implementation(libs.coil.compose)
 
 }

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android = "http://schemas.android.com/apk/res/android"
+	xmlns:tools = "http://schemas.android.com/tools"
+	android:layout_width = "match_parent"
+	android:layout_height = "match_parent"
+	android:gravity = "center"
+	android:orientation = "vertical"
+	tools:context = ".fragments.ProfileEditFragment">
+
+	<ImageView
+		android:id = "@+id/profileImageIV"
+		android:layout_width = "100dp"
+		android:layout_height = "100dp"
+		android:contentDescription = "Profile image"
+		android:src = "@drawable/baseline_person_24" />
+
+	<EditText
+		android:id = "@+id/fullNameET"
+		android:layout_width = "match_parent"
+		android:layout_height = "wrap_content"
+		android:layout_margin = "10dp"
+		android:background = "#3F51B5"
+		android:hint = "Full name"
+		android:padding = "5dp"
+		android:textAlignment = "center"
+		android:textAppearance = "@style/TextAppearance.Material3.TitleLarge"
+		android:textColor = "@color/black" />
+
+	<TextView
+		android:id = "@+id/emailTV"
+		android:layout_width = "match_parent"
+		android:layout_height = "wrap_content"
+		android:layout_margin = "10dp"
+		android:background = "#3f51b5"
+		android:padding = "5dp"
+		android:text = "email@domain.com"
+		android:textAlignment = "center"
+		android:textAppearance = "@style/TextAppearance.Material3.TitleLarge"
+		android:textColor = "@color/black" />
+
+	<EditText
+		android:id = "@+id/bioET"
+		android:layout_width = "match_parent"
+		android:layout_height = "wrap_content"
+		android:layout_margin = "10dp"
+		android:background = "#3F51B5"
+		android:hint = "Bio"
+		android:padding = "5dp"
+		android:textAlignment = "center"
+		android:textAppearance = "@style/TextAppearance.Material3.TitleLarge"
+		android:textColor = "@color/black" />
+
+	<Button
+		android:id = "@+id/btnSave"
+		android:layout_width = "wrap_content"
+		android:layout_height = "wrap_content"
+		android:layout_margin = "10dp"
+		android:backgroundTint = "#9C27B0"
+		android:text = "Save"
+		android:textAppearance = "@style/TextAppearance.Material3.TitleLarge"
+		android:textColor = "@color/black" />
+
+
+</LinearLayout>
